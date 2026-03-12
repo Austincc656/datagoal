@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataGoal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=3">
 </head>
-
 <body>
+    <header>
+        <h1>⚽ DataGoal</h1>
+        <p>Beyond the Scoreline.</p>
+        <hr>
+    </header>
 
-<nav>
-<h2>⚽ DataGoal</h2>
-<p>Beyond the Scoreline</p>
-<hr>
-</nav>
-
-<div>
-{% block content %}{% endblock %}
-</div>
-
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>

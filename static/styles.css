@@ -1,29 +1,25 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
+    padding: 20px;
     background-color: #0f172a;
     color: white;
 }
 
-nav {
-    background-color: #111827;
-    padding: 20px;
-    border-bottom: 2px solid #22c55e;
+header {
+    margin-bottom: 30px;
 }
 
-nav h2, nav p {
-    margin: 0;
-}
-
-.container {
-    padding: 30px;
+p {
+    color: #cbd5e1;
 }
 
 a {
     color: #22c55e;
-    text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
+hr {
+    border: none;
+    border-top: 1px solid #334155;
+    margin-top: 15px;
 }
