@@ -1,0 +1,1 @@
+print("Welcome to DataGoal - Beyond the Scoreline")
