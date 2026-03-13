@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="page-heading">
+    <span class="eyebrow">PREDICTION RESULT</span>
+    <h2>{{ home_team }} vs {{ away_team }}</h2>
+    <p>Here is DataGoal’s current reading of the matchup.</p>
+</section>
+
+<section class="result-grid">
+    <article class="card result-main">
+        <div class="result-top">
+            <div class="result-team">
+                <span class="team-badge">H</span>
+                <div>
+                    <p class="muted">Home</p>
+                    <h3>{{ home_team }}</h3>
+                </div>
+            </div>
+
+            <div class="result-score">
+                <span>{{ home_score }}</span>
+                <small>score index</small>
+            </div>
+        </div>
+
+        <div class="result-top">
+            <div class="result-team">
+                <span class="team-badge alt">A</span>
+                <div>
+                    <p class="muted">Away</p>
+                    <h3>{{ away_team }}</h3>
+                </div>
+            </div>
+
+            <div class="result-score">
+                <span>{{ away_score }}</span>
+                <small>score index</small>
+            </div>
+        </div>
+
+        <div class="verdict-box">
+            <span class="eyebrow">VERDICT</span>
+            <h3>{{ result }}</h3>
+        </div>
+    </article>
+
+    <article class="card result-side">
+        <h3>Win probability view</h3>
+
+        <div class="probability-item">
+            <div class="probability-label">
+                <span>{{ home_team }}</span>
+                <strong>{{ home_prob }}%</strong>
+            </div>
+            <div class="progress">
+                <div class="progress-bar home-bar" style="width: {{ home_prob }}%;"></div>
+            </div>
+        </div>
+
+        <div class="probability-item">
+            <div class="probability-label">
+                <span>Draw</span>
+                <strong>{{ draw_prob }}%</strong>
+            </div>
+            <div class="progress">
+                <div class="progress-bar draw-bar" style="width: {{ draw_prob }}%;"></div>
+            </div>
+        </div>
+
+        <div class="probability-item">
+            <div class="probability-label">
+                <span>{{ away_team }}</span>
+                <strong>{{ away_prob }}%</strong>
+            </div>
+            <div class="progress">
+                <div class="progress-bar away-bar" style="width: {{ away_prob }}%;"></div>
+            </div>
+        </div>
+    </article>
+</section>
+
+<section class="stats-compare">
+    <article class="card stat-card">
+        <h3>Recent form comparison</h3>
+        <div class="compare-row"><span>Wins in last 5</span><strong>{{ home_wins }} - {{ away_wins }}</strong></div>
+        <div class="compare-row"><span>Goals scored</span><strong>{{ home_goals_for }} - {{ away_goals_for }}</strong></div>
+        <div class="compare-row"><span>Goals conceded</span><strong>{{ home_goals_against }} - {{ away_goals_against }}</strong></div>
+    </article>
+
+    <article class="card action-card">
+        <span class="eyebrow">NEXT STEP</span>
+        <h3>Run another fixture</h3>
+        <p>Compare another pair of teams and test different form scenarios.</p>
+        <a href="/predict" class="btn btn-primary btn-full">Try another prediction</a>
+    </article>
+</section>
+{% endblock %}

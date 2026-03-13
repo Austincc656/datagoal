@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from predictor import calculate_prediction
+from api_client import get_live_matches
 
 app = Flask(__name__)
 
@@ -8,7 +9,14 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-
+@app.route("/live")
+def live():
+    try:
+        matches = get_live_matches()
+        return render_template("live.html", matches=matches)
+    except Exception as e:
+        return f"<h1>Live Matches Error</h1><p>{e}</p>"
+    
 @app.route("/predict", methods=["GET", "POST"])
 def predict():
     if request.method == "POST":

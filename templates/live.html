@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Matches</title>
+</head>
+<body>
+    <h1>⚽ Live Matches</h1>
+
+    {% if matches and matches.get('response') and matches['response']|length > 0 %}
+        {% for match in matches['response'] %}
+            <div style="margin-bottom: 20px; padding: 12px; border: 1px solid #ccc;">
+                <p><strong>{{ match.league.name }}</strong></p>
+                <h3>{{ match.teams.home.name }} vs {{ match.teams.away.name }}</h3>
+                <p>{{ match.goals.home }} - {{ match.goals.away }}</p>
+                <p>
+                    Status:
+                    {% if match.fixture.status.elapsed %}
+                        {{ match.fixture.status.elapsed }}'
+                    {% else %}
+                        {{ match.fixture.status.short }}
+                    {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No live matches right now, or the API returned no live fixtures.</p>
+    {% endif %}
+
+    <a href="/">Back Home</a>
+</body>
+</html>

@@ -1,31 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataGoal Predictor</title>
-</head>
-<body>
-    <h1>⚽ Match Predictor</h1>
-    <p>Enter recent form stats for two teams.</p>
+{% extends "layout.html" %}
 
-    <form method="POST">
-        <h3>Home Team</h3>
-        <input type="text" name="home_team" placeholder="Home team name" required><br><br>
-        <input type="number" name="home_wins" placeholder="Wins in last 5" min="0" max="5" required><br><br>
-        <input type="number" name="home_goals_for" placeholder="Goals scored in last 5" min="0" required><br><br>
-        <input type="number" name="home_goals_against" placeholder="Goals conceded in last 5" min="0" required><br><br>
+{% block content %}
+<section class="page-heading">
+    <span class="eyebrow">MATCH PREDICTION ENGINE</span>
+    <h2>Predict a football match</h2>
+    <p>Enter recent form stats for both teams and let DataGoal estimate the likely outcome.</p>
+</section>
 
-        <h3>Away Team</h3>
-        <input type="text" name="away_team" placeholder="Away team name" required><br><br>
-        <input type="number" name="away_wins" placeholder="Wins in last 5" min="0" max="5" required><br><br>
-        <input type="number" name="away_goals_for" placeholder="Goals scored in last 5" min="0" required><br><br>
-        <input type="number" name="away_goals_against" placeholder="Goals conceded in last 5" min="0" required><br><br>
+<form method="POST" class="predictor-grid">
+    <section class="card team-card">
+        <div class="card-header">
+            <span class="team-dot home"></span>
+            <h3>Home Team</h3>
+        </div>
 
-        <button type="submit">Predict Match</button>
-    </form>
+        <label>Team name</label>
+        <input type="text" name="home_team" placeholder="e.g. Arsenal" required>
 
-    <br>
-    <a href="/">Back Home</a>
-</body>
-</html>
+        <label>Wins in last 5</label>
+        <input type="number" name="home_wins" min="0" max="5" placeholder="0 - 5" required>
+
+        <label>Goals scored in last 5</label>
+        <input type="number" name="home_goals_for" min="0" placeholder="e.g. 11" required>
+
+        <label>Goals conceded in last 5</label>
+        <input type="number" name="home_goals_against" min="0" placeholder="e.g. 4" required>
+    </section>
+
+    <section class="card team-card">
+        <div class="card-header">
+            <span class="team-dot away"></span>
+            <h3>Away Team</h3>
+        </div>
+
+        <label>Team name</label>
+        <input type="text" name="away_team" placeholder="e.g. Liverpool" required>
+
+        <label>Wins in last 5</label>
+        <input type="number" name="away_wins" min="0" max="5" placeholder="0 - 5" required>
+
+        <label>Goals scored in last 5</label>
+        <input type="number" name="away_goals_for" min="0" placeholder="e.g. 8" required>
+
+        <label>Goals conceded in last 5</label>
+        <input type="number" name="away_goals_against" min="0" placeholder="e.g. 6" required>
+    </section>
+
+    <section class="card action-card">
+        <div>
+            <span class="eyebrow">ANALYZE</span>
+            <h3>Generate prediction insight</h3>
+            <p>DataGoal compares recent wins, attacking output, and defensive resistance.</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Predict Match</button>
+    </section>
+</form>
+{% endblock %}
