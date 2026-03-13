@@ -42,7 +42,14 @@ DataGoal is a football analytics and match prediction platform built as my CS50 
   - goals conceded
 - Implemented basic prediction logic based on weighted score comparison
 
-## Current Status
+## Milestone 6: Live Match Data Integration
+- Connected DataGoal to API-Football
+- Implemented API client for live fixtures
+- Added /live route in Flask
+- Built live match template
+- Implemented fallback to today's fixtures when no matches are live
+
+## Current Status    
 - Flask app is running successfully
 - Homepage is rendering
 - CSS is working
