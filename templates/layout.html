@@ -4,17 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataGoal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=7">
 </head>
 <body>
-    <header>
-        <h1>⚽ DataGoal</h1>
-        <p>Beyond the Scoreline.</p>
-        <hr>
-    </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+<header>
+    <div class="nav-container">
+        <h1>⚽ DataGoal</h1>
+
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/predict">Predictor</a>
+            <a href="/live">Live</a>
+            <a href="/history">History</a>
+            <a href="/player">Player Hub</a>
+            <a href="/match">Match Center</a>
+        </nav>
+    </div>
+
+    <p>Beyond the Scoreline.</p>
+    <hr>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+    <main class="container">
+</main>
+
 </body>
 </html>

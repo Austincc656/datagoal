@@ -1,33 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Matches</title>
-</head>
-<body>
-    <h1>⚽ Live Matches</h1>
+{% extends "layout.html" %}
 
-    {% if matches and matches.get('response') and matches['response']|length > 0 %}
-        {% for match in matches['response'] %}
-            <div style="margin-bottom: 20px; padding: 12px; border: 1px solid #ccc;">
-                <p><strong>{{ match.league.name }}</strong></p>
-                <h3>{{ match.teams.home.name }} vs {{ match.teams.away.name }}</h3>
-                <p>{{ match.goals.home }} - {{ match.goals.away }}</p>
-                <p>
-                    Status:
+{% block content %}
+<section class="page-heading">
+    <span class="eyebrow">MATCH CENTER</span>
+    <h2>{{ page_title }}</h2>
+    <p>Track football fixtures, scorelines, and match status in real time.</p>
+</section>
+
+{% if matches and matches|length > 0 %}
+
+    {% set current_league = namespace(name='') %}
+
+    {% for match in matches %}
+        {% if current_league.name != match.league.name %}
+            {% set current_league.name = match.league.name %}
+            <div class="league-header">
+                <h3>{{ match.league.name }}</h3>
+                <span class="muted">
+                    {{ match.league.country if match.league.country else "Football" }}
+                </span>
+            </div>
+        {% endif %}
+
+        <article class="live-match-card">
+            <div class="live-top-row">
+                <span class="status-pill
+                    {% if match.fixture.status.short in ['1H', '2H', 'HT', 'ET', 'BT', 'P'] %}
+                        live-pill
+                    {% elif match.fixture.status.short in ['FT', 'AET', 'PEN'] %}
+                        finished-pill
+                    {% else %}
+                        upcoming-pill
+                    {% endif %}
+                ">
                     {% if match.fixture.status.elapsed %}
                         {{ match.fixture.status.elapsed }}'
                     {% else %}
                         {{ match.fixture.status.short }}
                     {% endif %}
-                </p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No live matches right now, or the API returned no live fixtures.</p>
-    {% endif %}
+                </span>
 
-    <a href="/">Back Home</a>
-</body>
-</html>
+                <span class="match-time muted">
+                    {{ match.fixture.date[:10] if match.fixture.date else "" }}
+                </span>
+            </div>
+
+            <div class="teams-score-grid">
+                <div class="team-block">
+                    <div class="team-name-row">
+                        {% if match.teams.home.logo %}
+                            <img src="{{ match.teams.home.logo }}" alt="{{ match.teams.home.name }}" class="team-logo">
+                        {% endif %}
+                        <span class="team-name">{{ match.teams.home.name }}</span>
+                    </div>
+
+                    <div class="team-name-row">
+                        {% if match.teams.away.logo %}
+                            <img src="{{ match.teams.away.logo }}" alt="{{ match.teams.away.name }}" class="team-logo">
+                        {% endif %}
+                        <span class="team-name">{{ match.teams.away.name }}</span>
+                    </div>
+                </div>
+
+                <div class="score-block">
+                    <div class="score-line">
+                        <span>{{ match.goals.home if match.goals.home is not none else "-" }}</span>
+                        <span class="score-divider">:</span>
+                        <span>{{ match.goals.away if match.goals.away is not none else "-" }}</span>
+                    </div>
+                    <small class="muted">{{ match.fixture.status.long }}</small>
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+
+{% else %}
+    <article class="card feature-card">
+        <h3>No matches available</h3>
+        <p class="muted">There are no live or scheduled fixtures available right now.</p>
+    </article>
+{% endif %}
+{% endblock %}

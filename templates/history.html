@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="page-heading">
+    <span class="eyebrow">DATA ANALYTICS</span>
+    <h2>Prediction History</h2>
+    <p>Previously generated match predictions stored in the DataGoal database.</p>
+</section>
+
+{% if predictions and predictions|length > 0 %}
+    <section class="feature-grid">
+        {% for item in predictions %}
+        <article class="card feature-card">
+            <h3>{{ item["home_team"] }} vs {{ item["away_team"] }}</h3>
+            <p><strong>Predicted Score Index:</strong> {{ item["home_score"] }} : {{ item["away_score"] }}</p>
+            <p><strong>Verdict:</strong> {{ item["result"] }}</p>
+            <p class="muted"><strong>Created:</strong> {{ item["created_at"] }}</p>
+        </article>
+        {% endfor %}
+    </section>
+{% else %}
+    <article class="card feature-card">
+        <h3>No predictions yet</h3>
+        <p class="muted">Run the predictor to generate your first saved prediction.</p>
+    </article>
+{% endif %}
+{% endblock %}

@@ -1,3 +1,4 @@
+/* ===== GLOBAL ===== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,20 +7,247 @@ body {
     color: white;
 }
 
-header {
-    margin-bottom: 30px;
+h1, h2, h3 {
+    margin: 0;
 }
 
 p {
     color: #cbd5e1;
 }
 
-a {
+/* ===== HEADER & NAV ===== */
+header {
+    margin-bottom: 30px;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    text-decoration: none;
     color: #22c55e;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* ===== PAGE HEADINGS ===== */
+.page-heading {
+    margin-bottom: 20px;
+}
+
+.eyebrow {
+    font-size: 12px;
+    color: #22c55e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 hr {
     border: none;
     border-top: 1px solid #334155;
     margin-top: 15px;
+}
+
+/* ===== GRID LAYOUT ===== */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* ===== CARDS ===== */
+.card {
+    background-color: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.feature-card h3 {
+    margin-bottom: 10px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #22c55e;
+    color: black;
+    font-weight: bold;
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* ===== FORM ===== */
+input {
+    padding: 6px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-radius: 4px;
+    border: none;
+}
+
+/* ===== PREDICT PAGE ===== */
+.predictor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.team-card {
+    background-color: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.team-card label {
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.team-card input {
+    margin-bottom: 12px;
+}
+
+.action-card {
+    grid-column: span 2;
+    text-align: center;
+}
+
+/* ===== RESULT PAGE ===== */
+.team-compare {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.verdict {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* ===== PROBABILITY BAR ===== */
+.probability-bar {
+    margin-top: 10px;
+}
+
+.bar {
+    background: #334155;
+    height: 8px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.bar div {
+    background: #22c55e;
+    height: 100%;
+}
+
+/* ===== LIVE MATCHES ===== */
+.match-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.match-teams {
+    display: flex;
+    flex-direction: column;
+}
+
+.match-score {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.match-meta {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* ===== HISTORY ===== */
+.muted {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .predictor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-card {
+        grid-column: span 1;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+.match-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.match-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.team-logo {
+    width: 28px;
+    height: 28px;
+}
+
+.match-center {
+    text-align: right;
+}
+
+.match-score {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.match-meta {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
 }
