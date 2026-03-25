@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}500 | DataGoal{% endblock %}
+
+{% block main %}
+<section class="error-state">
+    <div class="error-code">500</div>
+    <h2>Server error</h2>
+    <p class="muted">Something went wrong while processing your request.</p>
+    <div class="mt-3">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Go Home</a>
+    </div>
+</section>
+{% endblock %}

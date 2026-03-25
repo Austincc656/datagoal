@@ -1,27 +1,52 @@
 {% extends "layout.html" %}
 
-{% block content %}
+{% block title %}History | DataGoal{% endblock %}
+
+{% block main %}
 <section class="page-heading">
-    <span class="eyebrow">DATA ANALYTICS</span>
-    <h2>Prediction History</h2>
-    <p>Previously generated match predictions stored in the DataGoal database.</p>
+    <span class="eyebrow">Prediction Archive</span>
+    <h2>History</h2>
+    <p>Review every saved match prediction and revisit the reasoning behind each decision.</p>
 </section>
 
-{% if predictions and predictions|length > 0 %}
-    <section class="feature-grid">
-        {% for item in predictions %}
-        <article class="card feature-card">
-            <h3>{{ item["home_team"] }} vs {{ item["away_team"] }}</h3>
-            <p><strong>Predicted Score Index:</strong> {{ item["home_score"] }} : {{ item["away_score"] }}</p>
-            <p><strong>Verdict:</strong> {{ item["result"] }}</p>
-            <p class="muted"><strong>Created:</strong> {{ item["created_at"] }}</p>
-        </article>
-        {% endfor %}
-    </section>
+{% if predictions %}
+    <div class="card">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>League</th>
+                    <th>Fixture</th>
+                    <th>Prediction</th>
+                    <th>Confidence</th>
+                    <th>Reasoning</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in predictions %}
+                    <tr>
+                        <td>{{ row.created_at }}</td>
+                        <td>{{ row.league }}</td>
+                        <td>
+                            <a href="{{ url_for('result', prediction_id=row.id) }}">
+                                {{ row.home_team }} vs {{ row.away_team }}
+                            </a>
+                        </td>
+                        <td><strong>{{ row.prediction }}</strong></td>
+                        <td>{{ row.confidence }}%</td>
+                        <td>{{ row.reasons }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% else %}
-    <article class="card feature-card">
-        <h3>No predictions yet</h3>
-        <p class="muted">Run the predictor to generate your first saved prediction.</p>
-    </article>
+    <div class="card empty-state">
+        <h2>No predictions yet</h2>
+        <p>Your saved predictions will appear here once you start using the prediction engine.</p>
+        <div class="mt-3">
+            <a href="{{ url_for('predict') }}" class="btn btn-primary">Make Your First Prediction</a>
+        </div>
+    </div>
 {% endif %}
 {% endblock %}

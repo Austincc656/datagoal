@@ -3,33 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataGoal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v=7">
+    <title>{% block title %}DataGoal{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 <body>
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo">
+                <span class="logo-mark">⚽</span>
+                <span>Data<span class="goal-accent">Goal</span></span>
+            </a>
 
-<header>
-    <div class="nav-container">
-        <h1>⚽ DataGoal</h1>
+            <nav class="nav-links">
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('live') }}">Live</a>
+                <a href="{{ url_for('predict') }}">Predict</a>
 
-        <nav class="nav-links">
-            <a href="/">Home</a>
-            <a href="/predict">Predictor</a>
-            <a href="/live">Live</a>
-            <a href="/history">History</a>
-            <a href="/player">Player Hub</a>
-            <a href="/match">Match Center</a>
-        </nav>
-    </div>
+                {% if session.get("user_id") %}
+                    <a href="{{ url_for('history') }}">History</a>
+                    <a href="{{ url_for('insights') }}">Insights</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('register') }}">Register</a>
+                {% endif %}
+            </nav>
+        </div>
 
-    <p>Beyond the Scoreline.</p>
-    <hr>
-</header>
+        <div class="tagline">
+            Beyond the scoreline — football predictions with explainable insights.
+            {% if session.get("username") %}
+                <span class="text-muted"> | Signed in as {{ session.get("username") }}</span>
+            {% endif %}
+        </div>
 
-<main>
-    {% block content %}{% endblock %}
+        <hr class="divider">
+    </header>
+
     <main class="container">
-</main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert-wrap">
+                    {% for message in messages %}
+                        <div class="alert alert-warning">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
 
+        {% block main %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>DataGoal: Beyond the Scoreline | CS50 Final Project</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

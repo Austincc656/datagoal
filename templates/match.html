@@ -3,27 +3,114 @@
 {% block content %}
 <section class="page-heading">
     <span class="eyebrow">MATCH CENTER</span>
-    <h2>Live match intelligence area</h2>
-    <p>This section will later display live scores, match events, team stats, and analytics cards.</p>
+    <h2>Explore football match intelligence</h2>
+    <p>
+        Use DataGoal’s Match Center to follow live fixtures, compare matchups, and move from scorelines to deeper football insight.
+    </p>
+</section>
+
+<section class="hero hero-split">
+    <div class="hero-main">
+        <span class="eyebrow">MATCHDAY WORKSPACE</span>
+        <h1>One place for live football context.</h1>
+        <p>
+            Match Center brings together live fixtures, recent form awareness, and prediction workflows so you can analyze football matches with more structure and confidence.
+        </p>
+
+        <div class="hero-actions">
+            <a href="/live" class="btn btn-primary">View Live Matches</a>
+            <a href="/predict" class="btn btn-secondary">Open Predictor</a>
+        </div>
+    </div>
+
+    <aside class="hero-side card">
+        <div class="showcase-header">
+            <span class="eyebrow">WHAT YOU CAN DO</span>
+            <h3>Match Center workflow</h3>
+            <p class="showcase-subtext">
+                A simple path from fixture discovery to football decision support.
+            </p>
+        </div>
+
+        <div class="player-showcase-list">
+            <article class="player-showcase-card">
+                <div class="player-avatar">1</div>
+                <div class="player-info">
+                    <h4>Track fixtures</h4>
+                    <p>Browse live matches and today’s football schedule in one place.</p>
+                    <span class="player-tag">Live awareness</span>
+                </div>
+            </article>
+
+            <article class="player-showcase-card">
+                <div class="player-avatar">2</div>
+                <div class="player-info">
+                    <h4>Compare teams</h4>
+                    <p>Move from team names to recent form signals and statistical context.</p>
+                    <span class="player-tag">Form context</span>
+                </div>
+            </article>
+
+            <article class="player-showcase-card">
+                <div class="player-avatar">3</div>
+                <div class="player-info">
+                    <h4>Generate insights</h4>
+                    <p>Use the predictor to estimate likely outcomes from recent performance data.</p>
+                    <span class="player-tag">Match insight</span>
+                </div>
+            </article>
+        </div>
+    </aside>
 </section>
 
 <section class="feature-grid">
     <article class="card feature-card">
-        <div class="feature-icon">⏱️</div>
-        <h3>Live Scores</h3>
-        <p>Track current scores and fixture updates.</p>
+        <h3>⚡ Live Match Flow</h3>
+        <p>
+            Follow active fixtures, match status, and current scorelines in real time.
+        </p>
+        <a href="/live" class="btn btn-primary">Go to Live</a>
     </article>
 
     <article class="card feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>Team Metrics</h3>
-        <p>Possession, shots, passing accuracy, and match balance.</p>
+        <h3>📊 Match Prediction</h3>
+        <p>
+            Select teams, load recent form, and generate a structured prediction output.
+        </p>
+        <a href="/predict" class="btn btn-primary">Use Predictor</a>
     </article>
 
     <article class="card feature-card">
-        <div class="feature-icon">🧠</div>
-        <h3>Insight Layer</h3>
-        <p>Context around performance beyond the scoreline.</p>
+        <h3>🗂 Prediction History</h3>
+        <p>
+            Review earlier match predictions and keep track of your analysis workflow.
+        </p>
+        <a href="/history" class="btn btn-primary">View History</a>
     </article>
+</section>
+
+<section class="card result-card" style="margin-top: 26px;">
+    <span class="eyebrow">NEXT EVOLUTION</span>
+    <h3 style="margin-bottom: 10px;">What Match Center can grow into</h3>
+    <p class="muted" style="margin-bottom: 14px;">
+        This area is ready for future upgrades such as head-to-head summaries, league filters, match previews, injury context, and side-by-side team comparisons.
+    </p>
+
+    <div class="history-list">
+        <div class="history-card">
+            <strong>Head-to-head view</strong>
+            <span class="history-meta">Compare two clubs across recent meetings.</span>
+        </div>
+
+        <div class="history-card">
+            <strong>League and competition filters</strong>
+            <span class="history-meta">Narrow match discovery by competition.</span>
+        </div>
+
+        <div class="history-card">
+            <strong>Pre-match dashboard</strong>
+            <span class="history-meta">Turn fixture data into a fuller match preview experience.</span>
+        </div>
+    </div>
 </section>
 {% endblock %}

@@ -1,18 +1,106 @@
 {% extends "layout.html" %}
 
-{% block content %}
-    <h2>Homepage is working</h2>
+{% block title %}Home | DataGoal{% endblock %}
 
-    <ul>
-        <li><a href="/predict">Match Predictor</a></li>
-        <li><a href="/player">Player Hub</a></li>
-        <li><a href="/match">Match Center</a></li>
-    </ul>
+{% block main %}
+<section class="hero">
+    <div class="hero-split">
+        <div class="hero-main">
+            <span class="eyebrow">Football Analytics Platform</span>
+            <h1>Data-driven match predictions with real football context.</h1>
+            <p>
+                DataGoal transforms football match data into explainable predictions by combining
+                team form, league performance, goal difference, head-to-head trends, and home advantage.
+            </p>
+
+            <div class="hero-actions">
+                <a href="{{ url_for('live') }}" class="btn btn-secondary">Explore Live Scores</a>
+                <a href="{{ url_for('predict') }}" class="btn btn-primary">Use Predict Tool</a>
+            </div>
+        </div>
+
+        <aside class="hero-side">
+            <div class="showcase-header">
+                <span class="eyebrow">Barcelona Focus</span>
+                <h3>Featured Barcelona Players</h3>
+                <p class="showcase-subtext">
+                    A curated player spotlight for football discussion, player analysis, and presentation storytelling.
+                </p>
+            </div>
+
+            <div class="player-showcase-list">
+                {% for player in featured_players %}
+                    <div class="player-showcase-card">
+                        {% if player.image %}
+                            <img src="{{ player.image }}" alt="{{ player.name }}" class="player-img">
+                        {% else %}
+                            <div class="player-avatar">
+                                {{ player.name.split()[0][0] }}{{ player.name.split()[-1][0] }}
+                            </div>
+                        {% endif %}
+
+                        <div class="player-info">
+                            <h4>{{ player.name }}</h4>
+                            <p>{{ player.role }}</p>
+                            <p>{{ player.description }}</p>
+                            <span class="player-tag">{{ player.tag }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </aside>
+    </div>
+</section>
+
+<section class="card mt-4">
+    <div class="barca-club-grid">
+        <div class="barca-logo-wrap">
+            <img src="{{ barcelona.logo }}" alt="{{ barcelona.name }} logo" class="barca-logo">
+        </div>
+
+        <div>
+            <span class="eyebrow">Club Profile</span>
+            <h3>{{ barcelona.name }}</h3>
+            <p class="muted">Founded: {{ barcelona.founded }} • Stadium: {{ barcelona.stadium }}</p>
+            <p>{{ barcelona.description }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="page-heading mt-5">
+    <span class="eyebrow">Platform Value</span>
+    <h2>Why DataGoal stands out</h2>
+    <p>
+        Unlike a standard football scoreboard app, DataGoal acts as a lightweight decision-support system.
+        It does not just show fixtures — it interprets football context and explains why a prediction was made.
+    </p>
+</section>
+
+<section class="feature-grid">
+    <div class="card feature-card">
+        <h3>Live Match Center</h3>
+        <p>
+            Browse live scores, club match stats, lineups, formations, coaches, and recent form without logging in.
+        </p>
+        <a href="{{ url_for('live') }}" class="btn btn-secondary">Open Live Center</a>
+    </div>
+
+    <div class="card feature-card">
+        <h3>Predict Tool</h3>
+        <p>
+            Generate explainable match predictions using form, standings, goal difference, and head-to-head logic.
+            Login is required to use this feature.
+        </p>
+        <a href="{{ url_for('predict') }}" class="btn btn-secondary">Open Predict Tool</a>
+    </div>
+
+    <div class="card feature-card">
+        <h3>Insights Dashboard</h3>
+        <p>
+            Review your saved prediction trends, confidence patterns, and most analyzed leagues and teams.
+            Login is required to access personal insights.
+        </p>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">Login to View Insights</a>
+    </div>
+</section>
 {% endblock %}
-
-<article class="card feature-card">
-    <div class="feature-icon">🔴</div>
-    <h3>Live Matches</h3>
-    <p>View real-time football scores and live fixture updates.</p>
-    <a href="/live" class="feature-link">Open live scores →</a>
-</article>

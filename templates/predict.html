@@ -1,59 +1,248 @@
 {% extends "layout.html" %}
 
-{% block content %}
+{% block title %}Predict | DataGoal{% endblock %}
+
+{% block main %}
 <section class="page-heading">
-    <span class="eyebrow">MATCH PREDICTION ENGINE</span>
-    <h2>Predict a football match</h2>
-    <p>Enter recent form stats for both teams and let DataGoal estimate the likely outcome.</p>
+    <span class="eyebrow">Prediction Engine</span>
+    <h2>Generate a match prediction</h2>
+    <p>
+        Select a league and two teams to compare recent form, table position, goal difference,
+        and head-to-head data before generating a saved prediction.
+    </p>
 </section>
 
-<form method="POST" class="predictor-grid">
-    <section class="card team-card">
+<section class="predictor-grid">
+    <div class="card team-card">
         <div class="card-header">
-            <span class="team-dot home"></span>
-            <h3>Home Team</h3>
+            <h3>Match Setup</h3>
+            <p class="muted">Choose a league, then select a home team and away team.</p>
         </div>
 
-        <label>Team name</label>
-        <input type="text" name="home_team" placeholder="e.g. Arsenal" required>
+        <form action="{{ url_for('predict') }}" method="post" id="predictionForm">
+            <label for="league">League</label>
+            <select name="league" id="league" required>
+                <option value="">Select a league</option>
+                {% for league_name in teams_by_league.keys() %}
+                    <option value="{{ league_name }}">{{ league_name }}</option>
+                {% endfor %}
+            </select>
 
-        <label>Wins in last 5</label>
-        <input type="number" name="home_wins" min="0" max="5" placeholder="0 - 5" required>
+            <label for="home_team">Home Team</label>
+            <select name="home_team" id="home_team" required>
+                <option value="">Select home team</option>
+            </select>
 
-        <label>Goals scored in last 5</label>
-        <input type="number" name="home_goals_for" min="0" placeholder="e.g. 11" required>
+            <label for="away_team">Away Team</label>
+            <select name="away_team" id="away_team" required>
+                <option value="">Select away team</option>
+            </select>
 
-        <label>Goals conceded in last 5</label>
-        <input type="number" name="home_goals_against" min="0" placeholder="e.g. 4" required>
-    </section>
+            <small class="muted">
+                The prediction will be saved automatically to your history after generation.
+            </small>
 
-    <section class="card team-card">
+            <div class="predict-actions">
+                <button class="btn btn-secondary" type="button" id="load-stats-btn">
+                    Load Stats
+                </button>
+                <button class="btn btn-primary" type="submit" id="predict-btn">
+                    Generate Prediction
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card stats-card">
         <div class="card-header">
-            <span class="team-dot away"></span>
-            <h3>Away Team</h3>
+            <h3>Team Comparison</h3>
+            <p class="muted">Preview both teams before generating the final prediction.</p>
         </div>
 
-        <label>Team name</label>
-        <input type="text" name="away_team" placeholder="e.g. Liverpool" required>
+        <div id="load-feedback" class="load-feedback hidden"></div>
 
-        <label>Wins in last 5</label>
-        <input type="number" name="away_wins" min="0" max="5" placeholder="0 - 5" required>
+        <div id="stats-shell" class="stats-shell hidden">
+            <div class="team-comparison-grid">
+                <div class="team-stats-box">
+                    <h4 id="homeTeamName">Home Team</h4>
+                    <ul>
+                        <li><strong>Form score:</strong> <span id="homeFormScore">-</span></li>
+                        <li><strong>League points:</strong> <span id="homePoints">-</span></li>
+                        <li><strong>Goal difference:</strong> <span id="homeGoalDiff">-</span></li>
+                        <li><strong>Position:</strong> <span id="homePosition">-</span></li>
+                        <li><strong>Recent form:</strong> <span id="homeRecentForm">-</span></li>
+                    </ul>
+                </div>
 
-        <label>Goals scored in last 5</label>
-        <input type="number" name="away_goals_for" min="0" placeholder="e.g. 8" required>
+                <div class="vs-column">
+                    <div class="vs-circle">VS</div>
+                </div>
 
-        <label>Goals conceded in last 5</label>
-        <input type="number" name="away_goals_against" min="0" placeholder="e.g. 6" required>
-    </section>
+                <div class="team-stats-box">
+                    <h4 id="awayTeamName">Away Team</h4>
+                    <ul>
+                        <li><strong>Form score:</strong> <span id="awayFormScore">-</span></li>
+                        <li><strong>League points:</strong> <span id="awayPoints">-</span></li>
+                        <li><strong>Goal difference:</strong> <span id="awayGoalDiff">-</span></li>
+                        <li><strong>Position:</strong> <span id="awayPosition">-</span></li>
+                        <li><strong>Recent form:</strong> <span id="awayRecentForm">-</span></li>
+                    </ul>
+                </div>
+            </div>
 
-    <section class="card action-card">
-        <div>
-            <span class="eyebrow">ANALYZE</span>
-            <h3>Generate prediction insight</h3>
-            <p>DataGoal compares recent wins, attacking output, and defensive resistance.</p>
+            <div class="head-to-head-box">
+                <h4>Head-to-Head Snapshot</h4>
+                <div class="h2h-stats">
+                    <div class="h2h-stat">
+                        <strong id="h2hHomeWins">-</strong>
+                        <span>Home Wins</span>
+                    </div>
+                    <div class="h2h-stat">
+                        <strong id="h2hDraws">-</strong>
+                        <span>Draws</span>
+                    </div>
+                    <div class="h2h-stat">
+                        <strong id="h2hAwayWins">-</strong>
+                        <span>Away Wins</span>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+</section>
+{% endblock %}
 
-        <button type="submit" class="btn btn-primary btn-full">Predict Match</button>
-    </section>
-</form>
+{% block scripts %}
+<script>
+    const teamsByLeague = {{ teams_by_league | tojson }};
+
+    const leagueSelect = document.getElementById("league");
+    const homeTeamSelect = document.getElementById("home_team");
+    const awayTeamSelect = document.getElementById("away_team");
+    const loadStatsBtn = document.getElementById("load-stats-btn");
+
+    const loadFeedback = document.getElementById("load-feedback");
+    const statsShell = document.getElementById("stats-shell");
+
+    function populateTeamSelect(selectElement, teams, placeholder) {
+        selectElement.innerHTML = "";
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = placeholder;
+        selectElement.appendChild(defaultOption);
+
+        teams.forEach(team => {
+            const option = document.createElement("option");
+            option.value = team;
+            option.textContent = team;
+            selectElement.appendChild(option);
+        });
+    }
+
+    function setFeedback(message, type = "") {
+        loadFeedback.textContent = message;
+        loadFeedback.className = "load-feedback";
+        if (type) {
+            loadFeedback.classList.add(type);
+        }
+        loadFeedback.classList.remove("hidden");
+    }
+
+    function hideFeedback() {
+        loadFeedback.className = "load-feedback hidden";
+        loadFeedback.textContent = "";
+    }
+
+    function hideStats() {
+        statsShell.classList.add("hidden");
+    }
+
+    function showStats() {
+        statsShell.classList.remove("hidden");
+    }
+
+    function formatRecentForm(results) {
+        return results.join(" - ");
+    }
+
+    leagueSelect.addEventListener("change", () => {
+        const selectedLeague = leagueSelect.value;
+
+        if (!selectedLeague || !teamsByLeague[selectedLeague]) {
+            populateTeamSelect(homeTeamSelect, [], "Select home team");
+            populateTeamSelect(awayTeamSelect, [], "Select away team");
+            hideFeedback();
+            hideStats();
+            return;
+        }
+
+        const teams = teamsByLeague[selectedLeague];
+        populateTeamSelect(homeTeamSelect, teams, "Select home team");
+        populateTeamSelect(awayTeamSelect, teams, "Select away team");
+        hideFeedback();
+        hideStats();
+    });
+
+    loadStatsBtn.addEventListener("click", async () => {
+        const league = leagueSelect.value;
+        const homeTeam = homeTeamSelect.value;
+        const awayTeam = awayTeamSelect.value;
+
+        if (!league || !homeTeam || !awayTeam) {
+            setFeedback("Please select a league, home team, and away team first.", "error");
+            hideStats();
+            return;
+        }
+
+        if (homeTeam === awayTeam) {
+            setFeedback("Please select two different teams.", "error");
+            hideStats();
+            return;
+        }
+
+        loadStatsBtn.classList.add("loading");
+        loadStatsBtn.innerHTML = 'Loading Stats <span class="btn-spinner"></span>';
+        setFeedback("Loading team comparison data...");
+        hideStats();
+
+        try {
+            const response = await fetch(
+                `/api/team-stats?league=${encodeURIComponent(league)}&home_team=${encodeURIComponent(homeTeam)}&away_team=${encodeURIComponent(awayTeam)}`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Unable to load team stats.");
+            }
+
+            document.getElementById("homeTeamName").textContent = data.home_team.name;
+            document.getElementById("homeFormScore").textContent = data.home_team.form_score;
+            document.getElementById("homePoints").textContent = data.home_team.points;
+            document.getElementById("homeGoalDiff").textContent = data.home_team.goal_diff;
+            document.getElementById("homePosition").textContent = data.home_team.position;
+            document.getElementById("homeRecentForm").textContent = formatRecentForm(data.home_team.recent_form);
+
+            document.getElementById("awayTeamName").textContent = data.away_team.name;
+            document.getElementById("awayFormScore").textContent = data.away_team.form_score;
+            document.getElementById("awayPoints").textContent = data.away_team.points;
+            document.getElementById("awayGoalDiff").textContent = data.away_team.goal_diff;
+            document.getElementById("awayPosition").textContent = data.away_team.position;
+            document.getElementById("awayRecentForm").textContent = formatRecentForm(data.away_team.recent_form);
+
+            document.getElementById("h2hHomeWins").textContent = data.head_to_head.home_wins;
+            document.getElementById("h2hAwayWins").textContent = data.head_to_head.away_wins;
+            document.getElementById("h2hDraws").textContent = data.head_to_head.draws;
+
+            setFeedback("Team stats loaded successfully.", "success");
+            showStats();
+        } catch (error) {
+            setFeedback(error.message || "Something went wrong while loading stats.", "error");
+            hideStats();
+        } finally {
+            loadStatsBtn.classList.remove("loading");
+            loadStatsBtn.innerHTML = "Load Stats";
+        }
+    });
+</script>
 {% endblock %}

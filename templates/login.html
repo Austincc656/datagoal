@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Login | DataGoal{% endblock %}
+
+{% block main %}
+<section class="auth-shell">
+    <div class="card auth-card">
+        <div class="page-heading">
+            <span class="eyebrow">Welcome Back</span>
+            <h2>Login</h2>
+            <p>Access your football prediction history and insights dashboard.</p>
+        </div>
+
+        <form action="{{ url_for('login') }}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input class="form-control" id="username" name="username" type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" id="password" name="password" type="password" required>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Login</button>
+                <a href="{{ url_for('register') }}" class="btn btn-secondary">Create Account</a>
+            </div>
+        </form>
+
+        <p class="auth-footer">
+            Don’t have an account yet? <a href="{{ url_for('register') }}">Register here</a>.
+        </p>
+    </div>
+</section>
+{% endblock %}

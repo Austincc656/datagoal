@@ -1,83 +1,170 @@
 {% extends "layout.html" %}
 
-{% block content %}
+{% block title %}Live Match Center | DataGoal{% endblock %}
+
+{% block main %}
 <section class="page-heading">
-    <span class="eyebrow">MATCH CENTER</span>
-    <h2>{{ page_title }}</h2>
-    <p>Track football fixtures, scorelines, and match status in real time.</p>
+    <span class="eyebrow">Live Match Center</span>
+    <h2>Real-time football intelligence</h2>
+    <p>
+        Explore live matches with richer context including scorelines, team visuals, formations,
+        coaches, starting lineups, substitutes, and recent form.
+    </p>
 </section>
 
-{% if matches and matches|length > 0 %}
-
-    {% set current_league = namespace(name='') %}
-
-    {% for match in matches %}
-        {% if current_league.name != match.league.name %}
-            {% set current_league.name = match.league.name %}
-            <div class="league-header">
-                <h3>{{ match.league.name }}</h3>
-                <span class="muted">
-                    {{ match.league.country if match.league.country else "Football" }}
-                </span>
-            </div>
-        {% endif %}
-
-        <article class="live-match-card">
-            <div class="live-top-row">
-                <span class="status-pill
-                    {% if match.fixture.status.short in ['1H', '2H', 'HT', 'ET', 'BT', 'P'] %}
-                        live-pill
-                    {% elif match.fixture.status.short in ['FT', 'AET', 'PEN'] %}
-                        finished-pill
-                    {% else %}
-                        upcoming-pill
-                    {% endif %}
-                ">
-                    {% if match.fixture.status.elapsed %}
-                        {{ match.fixture.status.elapsed }}'
-                    {% else %}
-                        {{ match.fixture.status.short }}
-                    {% endif %}
-                </span>
-
-                <span class="match-time muted">
-                    {{ match.fixture.date[:10] if match.fixture.date else "" }}
-                </span>
-            </div>
-
-            <div class="teams-score-grid">
-                <div class="team-block">
-                    <div class="team-name-row">
-                        {% if match.teams.home.logo %}
-                            <img src="{{ match.teams.home.logo }}" alt="{{ match.teams.home.name }}" class="team-logo">
-                        {% endif %}
-                        <span class="team-name">{{ match.teams.home.name }}</span>
+<section class="live-center-list">
+    {% if live_matches %}
+        {% for match in live_matches %}
+            <div class="card live-center-card">
+                <div class="live-center-top">
+                    <div>
+                        <h3>{{ match.league }}</h3>
+                        <p class="muted">{{ match.country }}</p>
                     </div>
 
-                    <div class="team-name-row">
-                        {% if match.teams.away.logo %}
-                            <img src="{{ match.teams.away.logo }}" alt="{{ match.teams.away.name }}" class="team-logo">
+                    <div>
+                        {% if match.status in ["1H", "2H", "HT", "ET", "BT", "P", "LIVE"] or "'" in match.status %}
+                            <span class="status-pill live-pill">
+                                {% if match.elapsed %}{{ match.elapsed }}'{% else %}{{ match.status }}{% endif %}
+                            </span>
+                        {% elif match.status in ["FT", "AET", "PEN"] %}
+                            <span class="status-pill finished-pill">{{ match.status }}</span>
+                        {% else %}
+                            <span class="status-pill upcoming-pill">{{ match.status }}</span>
                         {% endif %}
-                        <span class="team-name">{{ match.teams.away.name }}</span>
                     </div>
                 </div>
 
-                <div class="score-block">
-                    <div class="score-line">
-                        <span>{{ match.goals.home if match.goals.home is not none else "-" }}</span>
-                        <span class="score-divider">:</span>
-                        <span>{{ match.goals.away if match.goals.away is not none else "-" }}</span>
+                <div class="live-center-scoreboard">
+                    <div class="live-team-block">
+                        {% if match.home_logo %}
+                            <img src="{{ match.home_logo }}" alt="{{ match.home_team }} logo" class="club-logo">
+                        {% else %}
+                            <div class="club-fallback">{{ match.home_team[:1] }}</div>
+                        {% endif %}
+                        <h4>{{ match.home_team }}</h4>
                     </div>
-                    <small class="muted">{{ match.fixture.status.long }}</small>
+
+                    <div class="live-score-box">
+                        <div class="score-line">
+                            <span>{{ match.home_goals if match.home_goals is not none else "-" }}</span>
+                            <span class="score-separator">-</span>
+                            <span>{{ match.away_goals if match.away_goals is not none else "-" }}</span>
+                        </div>
+                        <p class="match-status-text">
+                            {% if match.elapsed %}{{ match.elapsed }}'{% else %}{{ match.status }}{% endif %}
+                        </p>
+                    </div>
+
+                    <div class="live-team-block">
+                        {% if match.away_logo %}
+                            <img src="{{ match.away_logo }}" alt="{{ match.away_team }} logo" class="club-logo">
+                        {% else %}
+                            <div class="club-fallback">{{ match.away_team[:1] }}</div>
+                        {% endif %}
+                        <h4>{{ match.away_team }}</h4>
+                    </div>
+                </div>
+
+                <div class="live-dashboard-grid">
+                    <div class="team-stats-box">
+                        <h4>{{ match.home_team }} Live Stats</h4>
+                        <ul>
+                            <li><strong>Possession:</strong> {{ match.home_stats.possession }}</li>
+                            <li><strong>Shots on target:</strong> {{ match.home_stats.shots_on_target }}</li>
+                            <li><strong>Total shots:</strong> {{ match.home_stats.total_shots }}</li>
+                            <li><strong>Corners:</strong> {{ match.home_stats.corners }}</li>
+                            <li><strong>Recent form:</strong> {{ match.home_recent_form | join(" - ") }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="team-stats-box">
+                        <h4>{{ match.away_team }} Live Stats</h4>
+                        <ul>
+                            <li><strong>Possession:</strong> {{ match.away_stats.possession }}</li>
+                            <li><strong>Shots on target:</strong> {{ match.away_stats.shots_on_target }}</li>
+                            <li><strong>Total shots:</strong> {{ match.away_stats.total_shots }}</li>
+                            <li><strong>Corners:</strong> {{ match.away_stats.corners }}</li>
+                            <li><strong>Recent form:</strong> {{ match.away_recent_form | join(" - ") }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="live-lineups-grid">
+                    <div class="team-stats-box">
+                        <h4>{{ match.lineups.home.team_name }}</h4>
+                        <p class="muted"><strong>Formation:</strong> {{ match.lineups.home.formation }}</p>
+                        <p class="muted"><strong>Coach:</strong> {{ match.lineups.home.coach }}</p>
+
+                        <div class="mt-3">
+                            <h5>Starting XI</h5>
+                            <ul class="squad-list">
+                                {% if match.lineups.home.start_xi %}
+                                    {% for player in match.lineups.home.start_xi %}
+                                        <li>{{ player }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>No lineup data available.</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        <div class="mt-3">
+                            <h5>Substitutes</h5>
+                            <ul class="squad-list">
+                                {% if match.lineups.home.substitutes %}
+                                    {% for player in match.lineups.home.substitutes %}
+                                        <li>{{ player }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>No substitute data available.</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="team-stats-box">
+                        <h4>{{ match.lineups.away.team_name }}</h4>
+                        <p class="muted"><strong>Formation:</strong> {{ match.lineups.away.formation }}</p>
+                        <p class="muted"><strong>Coach:</strong> {{ match.lineups.away.coach }}</p>
+
+                        <div class="mt-3">
+                            <h5>Starting XI</h5>
+                            <ul class="squad-list">
+                                {% if match.lineups.away.start_xi %}
+                                    {% for player in match.lineups.away.start_xi %}
+                                        <li>{{ player }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>No lineup data available.</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        <div class="mt-3">
+                            <h5>Substitutes</h5>
+                            <ul class="squad-list">
+                                {% if match.lineups.away.substitutes %}
+                                    {% for player in match.lineups.away.substitutes %}
+                                        <li>{{ player }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>No substitute data available.</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </article>
-    {% endfor %}
-
-{% else %}
-    <article class="card feature-card">
-        <h3>No matches available</h3>
-        <p class="muted">There are no live or scheduled fixtures available right now.</p>
-    </article>
-{% endif %}
+        {% endfor %}
+    {% else %}
+        <div class="card empty-state">
+            <h2>No live matches available</h2>
+            <p>
+                No live football data could be loaded right now. This may happen if there are no active live fixtures
+                or if the API key is missing or limited.
+            </p>
+        </div>
+    {% endif %}
+</section>
 {% endblock %}

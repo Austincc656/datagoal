@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}Insights | DataGoal{% endblock %}
+
+{% block main %}
+<section class="page-heading">
+    <span class="eyebrow">Analytics Layer</span>
+    <h2>Insights Dashboard</h2>
+    <p>
+        A high-level summary of your prediction behavior, confidence levels, and the leagues and teams
+        most frequently featured in your football analysis history.
+    </p>
+</section>
+
+<div class="insights-grid">
+    <div class="insight-card">
+        <div class="insight-value">{{ total_predictions }}</div>
+        <div class="insight-label">Total Predictions</div>
+    </div>
+
+    <div class="insight-card">
+        <div class="insight-value">{{ home_win_count }}</div>
+        <div class="insight-label">Home Win Predictions</div>
+    </div>
+
+    <div class="insight-card">
+        <div class="insight-value">{{ away_win_count }}</div>
+        <div class="insight-label">Away Win Predictions</div>
+    </div>
+
+    <div class="insight-card">
+        <div class="insight-value">{{ draw_count }}</div>
+        <div class="insight-label">Draw Predictions</div>
+    </div>
+</div>
+
+<div class="insight-row">
+    <div class="insight-card">
+        <h4>Highest Confidence</h4>
+        <div class="insight-value">{{ highest_confidence }}%</div>
+        <p class="insight-subtext">The strongest confidence level reached in your prediction history.</p>
+    </div>
+
+    <div class="insight-card">
+        <h4>Average Confidence</h4>
+        <div class="insight-value">{{ average_confidence }}%</div>
+        <p class="insight-subtext">Your average confidence across all saved predictions.</p>
+    </div>
+
+    <div class="insight-card">
+        <h4>Most Predicted League</h4>
+        <div class="insight-value" style="font-size: 1.35rem;">{{ most_predicted_league }}</div>
+        <p class="insight-subtext">The league that appears most frequently in your prediction history.</p>
+    </div>
+</div>
+
+<div class="insight-wide">
+    <div class="insight-card">
+        <h4>Most Featured Team</h4>
+        <div class="insight-value" style="font-size: 1.35rem;">{{ most_featured_team }}</div>
+        <p class="insight-subtext">
+            The team that appears most often across your saved predictions.
+        </p>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <h3>Business / Analytics Meaning</h3>
+    <p class="muted">
+        This dashboard strengthens DataGoal as more than a football app. It introduces a user-level analytical
+        layer that summarizes prediction behavior, confidence patterns, and preference trends.
+    </p>
+    <p class="muted">
+        From a business and decision-support perspective, this turns raw football data into interpretable
+        insights, which is one of the strongest differentiators of the project.
+    </p>
+</div>
+{% endblock %}
