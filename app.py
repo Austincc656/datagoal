@@ -1,3 +1,9 @@
+#i used claude ai to improve the app.py file, which is the main application file for the datagoal football prediction website.
+#the improvements include:
+#1. Refactored the code to improve readability and maintainability, including better organization of functions and routes.
+#2. Added more detailed comments and docstrings to explain the purpose of functions and code blocks
+
+
 import os
 import sqlite3
 from datetime import datetime
