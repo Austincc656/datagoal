@@ -1,5 +1,7 @@
 # DataGoal: Beyond the Scoreline
 
+## video Demo: https://youtu.be/qyBpSmh0H_s
+
 ## Overview
 
 DataGoal: Beyond the Scoreline is a football analytics web application built as my CS50 2026 final project. The goal of the project is to go beyond basic football score viewing by combining live football intelligence, explainable match prediction logic, and user-based analytics in one platform.
@@ -84,30 +86,28 @@ The insights page summarizes user prediction activity, including:
 
 ## Project Structure
 
-```text
 datagoal/
 │
 ├── app.py
 ├── api_client.py
 ├── requirements.txt
 ├── README.md
-├── .env
 ├── .gitignore
-├── datagoal.db
+├── schema.sql
 │
 ├── static/
-|   |__main.js
-│   └── styles.css
+│   ├── styles.css
+│   └── main.js
 │
-└── templates/
-    ├── layout.html
-    ├── index.html
-    ├── live.html
-    ├── predict.html
-    ├── result.html
-    ├── history.html
-    ├── insights.html
-    ├── login.html
-    ├── register.html
-    ├── 404.html
-    └── 500.html
+├── templates/
+│   ├── layout.html
+│   ├── index.html
+│   ├── live.html
+│   ├── predict.html
+│   ├── result.html
+│   ├── history.html
+│   ├── insights.html
+│   ├── login.html
+│   ├── register.html
+│   ├── 404.html
+│   └── 500.html
